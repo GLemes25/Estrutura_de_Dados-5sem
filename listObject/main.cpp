@@ -20,8 +20,7 @@ void displayMenu();
 void initList(listType *l);                        // Inicializa��o da lista com Zero elementos
 int elementsQuantity(listType *l);                 // Retorna a qtde de elementos na lista
 void printList(listType *l);                       // Imprime o conte�do da lista
-bool insertList(listType *l, objecType rg, int i); // insere um elemento na posi��o desejada.
-                                                   // Se n�o for permitido retorna false.
+bool insertList(listType *l, objecType rg, int i); // insere um elemento na posi��o desejada. // Se n�o for permitido retorna false.
 int findElement(listType *l, keyType ch);          // busca o elemento na lista
                                                    // Se encontar retorna a posi��o Sen�o retorna -1
 
@@ -104,12 +103,13 @@ int findElement(listType *l, keyType ch)
 }
 void displayMenu()
 {
-    cout << "------------------------\n";
-    cout << "\tMenu\n";
-    cout << "------------------------\n";
-    cout << "1 - Difficulty\n";
-    cout << "2 - Sound";
-    cout << "3 - Back\n";
-    cout << "3 - Back\n";
-    cout << "Digite 1,2,3 ou 4: \n\n";
+    cout << "-------------------------------------" << endl;
+    cout << "\tMenu" << endl;
+    cout << "-------------------------------------" << endl;
+    cout << "1 - Mostrar Quantidade de Elementos" << endl;
+    cout << "2 - Mostrar Lista";
+    cout << "3 - Inserir Item na Lista" << endl;
+    cout << "4 - Achar Elementos " << endl;
+    cout << "Digite 1,2,3 ou 4: " << endl
+         << endl;
 }
