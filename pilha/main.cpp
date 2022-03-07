@@ -1,19 +1,20 @@
 #include <iostream>
-#include <conio.h>
+#include <stdio.h>
 
 using namespace std;
 #define MAX 50
-typedef int TIPOCHAVE;
-typedef struct{
-    TIPOCHAVE chave;
-    //outros campos
+typedef int KeyType;
+typedef struct
+{
+    KeyType key;
+    // outros campos
+} ObjectType;
+typedef struct
+{
 
-}REGISTRO;
-typedef struct{
-
-REGISTRO A[MAX];
-int top;//posição do ultimo elemento da pilha
-}PILHA;
+    ObjectType list[MAX];
+    int top; // posição do ultimo elemento da pilha
+} StackType;
 
 /*função para manipular
  1-inicializar
@@ -23,91 +24,134 @@ int top;//posição do ultimo elemento da pilha
  5- retirar elementos da pilha (pop)
  6- reniciar a pilha
 */
- //1- iniicializar a pilha
+// iostream
+// 1- iniicializar a pilha
 
- void initPilha(PILHA *p){
-  p ->top = - 1;
-
-
- }
-//2-retorna a qtd de elementos na pilha
-int tamPilha(PILHA *p){
-return p ->top+1;
-
+bool initStack(StackType *stack)
+{
+    stack->top = -1;
+    cout << "pila iniciado" << endl;
+    return true;
 }
-//3- exibir os elementos amarzenados na pilha
-void exibePilha(PILHA *p ){
-    //exibe os elementos do topo para baixo
-    int i;//manipular o indice do vetor
-    cout<< "PILHA: ";
+// 2-retorna a qtd de elementos na pilha
+int sizeStack(StackType *stack)
+{
+    return stack->top + 1;
+}
 
-    for(i= p->top;i>=0;i-- ){
+// 3- exibir os elementos amarzenados na pilha
+void showStack(StackType *stack)
+{
+    // exibe os elementos do topo para baixo
+    int i; // manipular o indice do vetor
 
-        cout<<p->A[i].chave<< " ";
+    cout << "pilha: ";
+
+    for (i = stack->top; i >= 0; i--)
+    {
+
+        cout << stack->list[i].key << " ";
     }
-       cout<<endl;
+    cout << endl;
+
+    cout << sizeStack(stack) << " Itens " << endl;
 }
-//4- inserir elementos na pilha (push)
-//inserir sempre no topo da pilha se a pilha não estiver cheia
-bool push (PILHA *p , REGISTRO reg){
+// 4- inserir elementos na pilha (push)
+// inserir sempre no topo da pilha se a pilha não estiver cheia
+bool push(StackType *stack, ObjectType object)
+{
 
-   if(p->top >= MAX -1)
-    return false;
-   //caso da pilha n esteja cheia adiciono mais um elemento no topo
-   p->top = p->top+1;//atualiza a posição da pilha do topo
-   p->A[p->top]=reg;
-   return true;
-
-
+    if (stack->top >= MAX - 1)
+        return false;
+    // caso da pilha n esteja cheia adiciono mais um elemento no topo
+    stack->top = stack->top + 1; // atualiza a posição da pilha do topo
+    stack->list[stack->top] = object;
+    return true;
 }
-//5- retirar um elemento da pilha
+// 5- retirar um elemento da pilha
+bool remove(StackType *stack)
+{
+    if (stack->top == -1)
+        return false;
 
-bool pop( PILHA *p){
-   if(p->top == -1)
-    return false;
-
-   p ->top = p->top-1;
-   return true;
+    stack->top = stack->top - 1;
+    return true;
 }
+void displayMenu()
+{
+    cout << "-------------------------------------" << endl;
+    cout << "\tMenu" << endl;
+    cout << "-------------------------------------" << endl;
+    cout << "1 - Adicionar item na plha" << endl;
+    cout << "2 - Remover item da pilha" << endl;
+    cout << "3 - Mostrar pilha" << endl;
+    cout << "4 - Sair " << endl;
+    cout << "Escolha uma ação: " << endl
+         << endl;
+}
+void getch(void)
+{
 
-
-
-
-
-
+    cout << endl
+         << "digite qualquer tecla para continuar!!!" << endl;
+    system("read");
+}
 
 int main()
 {
-    bool result;
-    PILHA pilha;
-    REGISTRO aux;
+    StackType stack;
+    int option;
+    bool initiate = false;
+
     // inicializar a pilha
-    initPilha(&pilha);
+    do
+    {
+        /* code */
 
-    // adicionando um elemento na pilha
-    aux.chave = 18;
-    result = push(&pilha,aux);
-    cout<< result<<endl;
-    //adicionando outro elemento
-    aux.chave = 13;
-    result = push(&pilha,aux);
-    cout<< result<<endl;
-   //adicionando outro elemento
-    aux.chave = 1;
-    result = push(&pilha,aux);
-    cout<< result<<endl;
-    //adicionando outro elemento
-    aux.chave = 2;
-    result = push(&pilha,aux);
-    cout<< result<<endl;
+        displayMenu();
+        cin >> option;
 
-    exibePilha(&pilha);
-    //remover um elemento da pilha
-    result=pop(&pilha);
-    cout<<result<<endl;
-    exibePilha(&pilha);
-    getch();
+        initiate ?: initiate = initStack(&stack);
 
+        switch (option)
+        {
+        case 1:
+        {
+            ObjectType aux;
+            bool result;
 
+            cout << "Digite Chave " << endl;
+            cin >> aux.key;
+
+            result = push(&stack, aux);
+            cout << (result ? "Adicionado com sucesso " : "Pilha esta cheia") << endl;
+
+            break;
+        }
+
+        case 2:
+        {
+            remove(&stack);
+            break;
+        }
+        case 3:
+        {
+            showStack(&stack);
+            break;
+        }
+        case 4:
+        {
+
+            cout << "SAINU" << endl;
+
+            break;
+        }
+
+        default:
+            cout << "Opção invalida" << endl;
+        }
+        getch();
+
+    } while (option != 4);
     return 0;
 }
