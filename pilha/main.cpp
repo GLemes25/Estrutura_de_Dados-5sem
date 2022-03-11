@@ -30,7 +30,6 @@ typedef struct
 bool initStack(StackType *stack)
 {
     stack->top = -1;
-    cout << "pila iniciado" << endl;
     return true;
 }
 // 2-retorna a qtd de elementos na pilha
@@ -85,21 +84,23 @@ void displayMenu()
     cout << "1 - Adicionar item na plha" << endl;
     cout << "2 - Remover item da pilha" << endl;
     cout << "3 - Mostrar pilha" << endl;
-    cout << "4 - Sair " << endl;
+    cout << "4 - Reiniciar pilha  " << endl;
+    cout << "5 - Sair " << endl;
     cout << "Escolha uma ação: " << endl
          << endl;
 }
 void getch(void)
 {
+    cout<<endl;
+    system("read -p \"Pressione enter para continuar\" continuando");
+    cout<<endl;
 
-    cout << endl
-         << "digite qualquer tecla para continuar!!!" << endl;
-    system("read");
 }
 
 int main()
 {
     StackType stack;
+    StackType newStack;
     int option;
     bool initiate = false;
 
@@ -111,7 +112,7 @@ int main()
         displayMenu();
         cin >> option;
 
-        initiate ?: initiate = initStack(&stack);
+        initiate ?: initiate = initStack(&stack),initStack(&newStack);
 
         switch (option)
         {
@@ -141,8 +142,13 @@ int main()
         }
         case 4:
         {
+            stack=newStack;
+            break;
+        }
+        case 5:
+        {
 
-            cout << "SAINU" << endl;
+            cout << "Saindo..." << endl;
 
             break;
         }
@@ -152,6 +158,6 @@ int main()
         }
         getch();
 
-    } while (option != 4);
+    } while (option != 5);
     return 0;
 }
