@@ -8,111 +8,174 @@ using namespace std;
 typedef int keyType;
 typedef struct
 {
-        keyType key;
-        // Outros elementos
+    keyType key;
+    // Outros elementos
 } objectType;
 
 typedef struct
 {
-        objectType list[maxQuantity];
-        int start; // Posição inicial da fila
-        int quantity;   // quantitye de elementos na fila
+    objectType list[maxQuantity];
+    int start;    // Posição inicial da row
+    int quantity; // quantitye de elementos na row
 
 } rowType;
 
 /*Funções a serem implementadas
 1 - Inicialização
-2 - Retornar a quantidade de elementos na fila
-3 - Imprimir a fila
+2 - Retornar a quantidade de elementos na row
+3 - Imprimir a row
 4 - Inserir elementos (No final)
 5 - Remover elemento (No início)
 6 - Reiniciar a estrutura
 */
 
 // 1 - Inicialização
-void initRow(rowType *f)
+void initRow(rowType *row)
 {
 
-        f->start = 0;
-        f->quantity = 0;
+    row->start = 0;
+    row->quantity = 0;
 }
 
 // 2 - quantity elementos
-int elementQuantity(rowType *f)
+int elementQuantity(rowType *row)
 {
 
-        return f->quantity;
+    return row->quantity;
 }
 
-// 3 - Imprimir fila
-void printRow(rowType *f)
+// 3 - Imprimir row
+void printRow(rowType *row)
 {
 
-        // O primeiro elemento está na posição start o arranjo
-        // Após a última posição a próxima é 0
-        int i = f->start; // Define o início da fila
-        int j;            // Controla o loop para acessar todas as posições do arranjo
-        for (j = 0; j < f->quantity; j++)
-        {
-                cout << f->list[i].key;
-                i = (i + 1) % maxQuantity;
-        }
+    // O primeiro elemento está na posição start o arranjo
+    // Após a última posição a próxima é 0
+    int i = row->start; // Define o início da row
+    int j;              // Controla o loop para acessar todas as posições do arranjo
+    for (j = 0; j < row->quantity; j++)
+    {
+        cout << "  " << row->list[i].key;
+        i = (i + 1) % maxQuantity;
+    }
 
-        cout << endl;
+    cout << endl;
+    cout << "Quantidade de Elementos: " << elementQuantity(row) << endl;
 }
 
-bool insert(rowType *f, objectType reg)
+bool insert(rowType *row, objectType object)
 {
 
-        // verifica se a fola nao ta cheia
-        // INSERE UM ELEMENTO NO FINAL
-        // atualiza a quantitye de elementos
+    // verifica se a fola nao ta cheia
+    // INSERE UM ELEMENTO NO FINAL
+    // atualiza a quantitye de elementos
 
-        if (f->quantity >= maxQuantity)
-        {
-                return false;
-        }
+    if (row->quantity >= maxQuantity)
+    {
+        return false;
+    }
 
-        int pos = ((f->start + f->quantity) % maxQuantity);
-        f->list[pos] = reg;
-        f->quantity++;
-        return true;
+    int pos = ((row->start + row->quantity) % maxQuantity);
+    row->list[pos] = object;
+    row->quantity++;
+    return true;
 };
 
-bool remove(rowType *f, objectType *reg)
+bool remove(rowType *row, objectType *object)
 {
-        if (f->quantity == 0) // Verifica se esta vazio
-        {
-                return false;
-        }
+    if (row->quantity == 0) // Verifica se esta vazio
+    {
+        return false;
+    }
 
-        *reg = f->list[f->start];
-        f->start = (f->start + 1) % maxQuantity;
-        f->quantity--;
-        return true;
+    *object = row->list[row->start];
+    row->start = (row->start + 1) % maxQuantity;
+    row->quantity--;
+    return true;
 };
 
+void displayMenu()
+{
+    cout << "-------------------------------------" << endl;
+    cout << "\tMenu" << endl;
+    cout << "-------------------------------------" << endl;
+    cout << "1 - Adicionar item na fila" << endl;
+    cout << "2 - Remover item da fila" << endl;
+    cout << "3 - Mostrar fila" << endl;
+    cout << "4 - Reiniciar fila" << endl;
+    cout << "5 - Sair " << endl;
+    cout << "Escolha uma ação: " << endl
+         << endl;
+}
+
+void getch(void)
+{
+    cout << endl;
+    system("read -p \"Pressione enter para continuar\" continuando");
+    cout << endl;
+}
 int main()
 {
 
-        objectType aux;
-        bool r;
-        rowType fila;
+    objectType aux;
+    rowType row,newRow;
+    int option;
+    bool result;
+    string text;
 
-        initRow(&fila);
+    initRow(&row);
+    initRow(&newRow);
 
-        aux.key = 9;
-        r = insert(&fila, aux);
+    do
+    {
+        /* code */
 
-        cout << r << endl;
+        displayMenu();
+        cin >> option;
 
-        r = remove(&fila, &aux);
-
-        cout << r << endl;
-        if (r)
+        switch (option)
         {
-                cout << "REMOVIDO" << endl;
+        case 1:
+        {
+            cout << "\nInforme um valor para ser adicionado: ";
+            cin >> aux.key;
+            result = insert(&row, aux);
+            text = result ? ("\nDado adicionado com sucesso!!") : ("\nA fila esta cheia!!!");
+            cout << text << endl;
+            break;
         }
 
-        return 0;
+        case 2:
+        {
+            result = remove(&row, &aux);
+            text = (result) ? ("\nDado removido com sucesso!!") : ("\nA fila nao tem elementos para serem removidos!!");
+            cout << text << endl;
+            break;
+        }
+        case 3:
+        {
+            printRow(&row);
+            break;
+        }
+
+        case 4:
+        {
+            row=newRow;
+            break;
+        }
+
+        case 5:
+        {
+
+            cout << "Saindo..." << endl;
+
+            break;
+        }
+
+        default:
+            cout << "Opção invalida" << endl;
+        }
+        getch();
+
+    } while (option != 5);
+    return 0;
 }
