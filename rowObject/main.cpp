@@ -3,22 +3,22 @@
 
 using namespace std;
 
-#define MAX 6
+#define maxQuantity 6
 
-typedef int TIPOCHAVE;
+typedef int keyType;
 typedef struct
 {
-        TIPOCHAVE chave;
+        keyType key;
         // Outros elementos
-} REGISTRO;
+} objectType;
 
 typedef struct
 {
-        REGISTRO A[MAX];
+        objectType list[maxQuantity];
         int start; // Posição inicial da fila
-        int qtd;   // Qtde de elementos na fila
+        int quantity;   // quantitye de elementos na fila
 
-} FILA;
+} rowType;
 
 /*Funções a serem implementadas
 1 - Inicialização
@@ -30,83 +30,83 @@ typedef struct
 */
 
 // 1 - Inicialização
-void initFila(FILA *f)
+void initRow(rowType *f)
 {
 
         f->start = 0;
-        f->qtd = 0;
+        f->quantity = 0;
 }
 
-// 2 - Qtd elementos
-int qtdElementos(FILA *f)
+// 2 - quantity elementos
+int elementQuantity(rowType *f)
 {
 
-        return f->qtd;
+        return f->quantity;
 }
 
 // 3 - Imprimir fila
-void printFila(FILA *f)
+void printRow(rowType *f)
 {
 
         // O primeiro elemento está na posição start o arranjo
         // Após a última posição a próxima é 0
         int i = f->start; // Define o início da fila
         int j;            // Controla o loop para acessar todas as posições do arranjo
-        for (j = 0; j < f->qtd; j++)
+        for (j = 0; j < f->quantity; j++)
         {
-                cout << f->A[i].chave;
-                i = (i + 1) % MAX;
+                cout << f->list[i].key;
+                i = (i + 1) % maxQuantity;
         }
 
         cout << endl;
 }
 
-bool insere(FILA *f, REGISTRO reg)
+bool insert(rowType *f, objectType reg)
 {
 
         // verifica se a fola nao ta cheia
         // INSERE UM ELEMENTO NO FINAL
-        // atualiza a qtde de elementos
+        // atualiza a quantitye de elementos
 
-        if (f->qtd >= MAX)
+        if (f->quantity >= maxQuantity)
         {
                 return false;
         }
 
-        int pos = ((f->start + f->qtd) % MAX);
-        f->A[pos] = reg;
-        f->qtd++;
+        int pos = ((f->start + f->quantity) % maxQuantity);
+        f->list[pos] = reg;
+        f->quantity++;
         return true;
 };
 
-bool remover(FILA *f, REGISTRO *reg)
+bool remove(rowType *f, objectType *reg)
 {
-        if (f->qtd == 0) // Verifica se esta vazio
+        if (f->quantity == 0) // Verifica se esta vazio
         {
                 return false;
         }
 
-        *reg = f->A[f->start];
-        f->start = (f->start + 1) % MAX;
-        f->qtd--;
+        *reg = f->list[f->start];
+        f->start = (f->start + 1) % maxQuantity;
+        f->quantity--;
         return true;
 };
 
 int main()
 {
 
-        REGISTRO aux;
+        objectType aux;
         bool r;
-        FILA fila;
+        rowType fila;
 
-        initFila(&fila);
+        initRow(&fila);
 
-        aux.chave = 9;
-        r = insere(&fila, aux);
+        aux.key = 9;
+        r = insert(&fila, aux);
 
         cout << r << endl;
 
-        r = remover(&fila, &aux);
+        r = remove(&fila, &aux);
 
         cout << r << endl;
         if (r)
