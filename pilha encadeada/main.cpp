@@ -14,19 +14,18 @@ struct address{
 typedef struct address no;
 typedef struct{
     no *inicio;
-    int tam;
-}pilha;
+    int top; // posição do ultimo elemento da pilha
+
+}Pilha;
 
 //Procedimentos simples para manipulação da estrutura
 //1- Inicializar a lista
-void init (pilha *l){
+void init (Pilha *l){
   l->inicio = NULL;
-    pilha->top = -1;
-
   l->tam=0;
 }
 //2-Inserir um nó no inicio da lista
-void insereIni(pilha *l, int valor){
+void insereIni(Pilha *l, int valor){
     //Primeiro criar na memória o nó
     //Deve ser um ponteiro
     no *novo = (no*) malloc(sizeof(no));
@@ -36,7 +35,7 @@ void insereIni(pilha *l, int valor){
     l->inicio = novo;
     l->tam++;
 }
-void insereFim(pilha *l,int val){
+void insereFim(Pilha *l,int val){
     no *atual, *novo=(no*) malloc(sizeof(no));
     novo ->prox = NULL;
     novo ->chave = val;
@@ -54,7 +53,7 @@ void insereFim(pilha *l,int val){
     }
     l->tam++;
 }
-void imprime(pilha *l){
+void imprime(Pilha *l){
     no *atual;//ponteiro para o nó a ser manipulado
     atual = l->inicio;
     cout <<"Tamanho da lista: "<< l->tam<<endl;
@@ -65,7 +64,7 @@ void imprime(pilha *l){
     }
     cout<<endl<<endl;
 }
-void remover(pilha *l, int val){
+void remover(Pilha *l, int val){
     no *atual, *Aremover=NULL;
     atual = l->inicio;
     if(atual==NULL){
@@ -103,7 +102,7 @@ void remover(pilha *l, int val){
 
 int main()
 {
-    pilha lista;
+    Pilha lista;
     init(&lista);
     int op=0;
     int val;
