@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h>
+// #include <conio.h>
 using namespace std;
 
 struct address{
@@ -15,18 +15,16 @@ typedef struct address no;
 typedef struct{
     no *inicio;
     int tam;
-}pilha;
+}LISTA;
 
 //Procedimentos simples para manipulação da estrutura
 //1- Inicializar a lista
-void init (pilha *l){
+void init (LISTA *l){
   l->inicio = NULL;
-    pilha->top = -1;
-
   l->tam=0;
 }
 //2-Inserir um nó no inicio da lista
-void insereIni(pilha *l, int valor){
+void insereIni(LISTA *l, int valor){
     //Primeiro criar na memória o nó
     //Deve ser um ponteiro
     no *novo = (no*) malloc(sizeof(no));
@@ -36,7 +34,7 @@ void insereIni(pilha *l, int valor){
     l->inicio = novo;
     l->tam++;
 }
-void insereFim(pilha *l,int val){
+void insereFim(LISTA *l,int val){
     no *atual, *novo=(no*) malloc(sizeof(no));
     novo ->prox = NULL;
     novo ->chave = val;
@@ -54,10 +52,10 @@ void insereFim(pilha *l,int val){
     }
     l->tam++;
 }
-void imprime(pilha *l){
+void imprime(LISTA *l){
     no *atual;//ponteiro para o nó a ser manipulado
     atual = l->inicio;
-    cout <<"Tamanho da lista: "<< l->tam<<endl;
+    cout <<"\nTamanho da lista: "<< l->tam<<endl;
     cout <<"Lista: ";
     while(atual!=NULL){
         cout<<atual ->chave<<" ";//imprime o atual
@@ -65,19 +63,19 @@ void imprime(pilha *l){
     }
     cout<<endl<<endl;
 }
-void remover(pilha *l, int val){
+void remover(LISTA *l, int val){
     no *atual, *Aremover=NULL;
     atual = l->inicio;
     if(atual==NULL){
-        cout<<"Lista vazia!"<<endl;
+        cout<<"\nLista vazia!"<<endl;
     }
     else if (l->inicio->chave == val) { // se o elemento está no inicio
-        cout <<"Achei no inicio "<< l->inicio->chave<<endl;
+        cout <<"\nAchei no inicio "<< l->inicio->chave<<endl;
         Aremover = l->inicio;
         l->inicio = Aremover->prox;
     }
     else{
-        cout <<"Nao está no inicio"<<endl;
+        cout <<"\nNao está no inicio"<<endl;
         while(atual->prox!= NULL && atual->prox->chave!=val)
         {
             //vai para o proximo nó
@@ -86,12 +84,12 @@ void remover(pilha *l, int val){
             //fora do laço é que eu descubroo pq quebou
         }
         if(atual ->prox !=NULL && atual->prox->chave == val){
-            cout<<"achei o valor: "<<atual ->prox->chave<<endl;
+            cout<<"\nAchei o valor: "<<atual ->prox->chave<<endl;
             Aremover = atual->prox;
             atual->prox = Aremover ->prox;
         }
         else{
-            cout << "Nao achei!\n";
+            cout << "\nNao achei!\n";
             Aremover = NULL;
         }
     }
@@ -103,18 +101,18 @@ void remover(pilha *l, int val){
 
 int main()
 {
-    pilha lista;
+    LISTA lista;
     init(&lista);
     int op=0;
     int val;
     while (op!=5){
-        cout <<"1-Inserir no inicio\n2-Imprimir \n";
+        cout <<"\n1-Inserir no inicio\n2-Imprimir \n";
         cout <<"3-Inserie no Fim\n4-Remover\n5-Sair\n";
         cin>>op;
         switch(op)
         {
             case 1:
-                cout <<"Informe uma chave: ";
+                cout <<"\nInforme uma chave: ";
                 cin >> val;
                 insereIni(&lista,val);
                 break;
@@ -122,20 +120,20 @@ int main()
                 imprime(&lista);
                 break;
             case 3:
-                cout<<"Informe a chave: ";
+                cout<<"\nInforme a chave: ";
                 cin >> val;
                 insereFim(&lista,val);
                 break;
             case 4:
-                cout<<"Informe a chave: ";
+                cout<<"\nInforme a chave: ";
                 cin >> val;
                 remover(&lista,val);
                 break;
             case 5:
-                cout<<"Fim!";
+                cout<<"\nFim!";
                 break;
             default:
-                cout <<"Op. Errada!";
+                cout <<"\nOp. Errada!\n\n";
         }
     }
     return 0;

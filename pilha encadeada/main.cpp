@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h>
+// #include <conio.h>
 using namespace std;
 
 struct address{
@@ -11,124 +11,88 @@ struct address{
         //char cep[30];
         struct address *prox;
 };
+
 typedef struct address no;
+
 typedef struct{
     no *inicio;
-    int top; // posição do ultimo elemento da pilha
-
-}Pilha;
+    int top;
+}PILHA;
 
 //Procedimentos simples para manipulação da estrutura
 //1- Inicializar a lista
-void init (Pilha *l){
-  l->inicio = NULL;
-  l->tam=0;
+void init (PILHA *p){
+  p->inicio = NULL;
+  p->top=0;
 }
-//2-Inserir um nó no inicio da lista
-void insereIni(Pilha *l, int valor){
+
+//2-Inserir um nó no inicio da pilha
+bool push(PILHA *p, int valor){
     //Primeiro criar na memória o nó
     //Deve ser um ponteiro
     no *novo = (no*) malloc(sizeof(no));
     novo->chave=valor;
     //novo->prox =NULL;
-    novo->prox = l->inicio;
-    l->inicio = novo;
-    l->tam++;
+    novo->prox = p->inicio;
+    p->inicio = novo;
+    p->top++;
 }
-void insereFim(Pilha *l,int val){
-    no *atual, *novo=(no*) malloc(sizeof(no));
-    novo ->prox = NULL;
-    novo ->chave = val;
-    //Pode ser que a lista ainda não contenha nenhum valor
-    if(l->inicio==NULL){
-        l->inicio = novo;
-    }
-    else{
-        //percorrer a lista para encontrar o  último elemento
-        atual = l->inicio;
-        while(atual->prox!=NULL){
-            atual=atual->prox;
+
+bool pop(PILHA *p){
+    no *atual, *Aremover=NULL;
+    atual = p->inicio;
+    if(atual==NULL){
+        cout<<"Pilha vazia!!\n"<<endl;
+    }else {
+        Aremover = p->inicio;
+        p->inicio = Aremover->prox;
+    if(Aremover){
+        free(Aremover);
+        p->top--;
         }
-        atual->prox = novo;
     }
-    l->tam++;
 }
-void imprime(Pilha *l){
+
+void imprimePilha(PILHA *p){
     no *atual;//ponteiro para o nó a ser manipulado
-    atual = l->inicio;
-    cout <<"Tamanho da lista: "<< l->tam<<endl;
-    cout <<"Lista: ";
+    atual = p->inicio;
+    cout <<"Tamanho da pilha: "<< p->top<<endl;
+    cout <<"Pilha: ";
     while(atual!=NULL){
         cout<<atual ->chave<<" ";//imprime o atual
         atual = atual->prox;
     }
     cout<<endl<<endl;
 }
-void remover(Pilha *l, int val){
-    no *atual, *Aremover=NULL;
-    atual = l->inicio;
-    if(atual==NULL){
-        cout<<"Lista vazia!"<<endl;
-    }
-    else if (l->inicio->chave == val) { // se o elemento está no inicio
-        cout <<"Achei no inicio "<< l->inicio->chave<<endl;
-        Aremover = l->inicio;
-        l->inicio = Aremover->prox;
-    }
-    else{
-        cout <<"Nao está no inicio"<<endl;
-        while(atual->prox!= NULL && atual->prox->chave!=val)
-        {
-            //vai para o proximo nó
-            atual=atual->prox;
-            //vai até quebrar por encontrar ouchegar no fim da lista
-            //fora do laço é que eu descubroo pq quebou
-        }
-        if(atual ->prox !=NULL && atual->prox->chave == val){
-            cout<<"achei o valor: "<<atual ->prox->chave<<endl;
-            Aremover = atual->prox;
-            atual->prox = Aremover ->prox;
-        }
-        else{
-            cout << "Nao achei!\n";
-            Aremover = NULL;
-        }
-    }
-    if(Aremover){
-        free(Aremover);
-        l->tam--;
-    }
-}
+
 
 int main()
 {
-    Pilha lista;
-    init(&lista);
+    PILHA pilha;
+    init(&pilha);
     int op=0;
     int val;
     while (op!=5){
-        cout <<"1-Inserir no inicio\n2-Imprimir \n";
-        cout <<"3-Inserie no Fim\n4-Remover\n5-Sair\n";
+        cout <<"1-Iniciar a pilha\n2-Inserir no inicio da pilha \n";
+        cout <<"3-Remover do topo da pilha\n4-Imprimir pilha\n5-Sair\n";
         cin>>op;
         switch(op)
         {
             case 1:
-                cout <<"Informe uma chave: ";
-                cin >> val;
-                insereIni(&lista,val);
+                init(&pilha);
+                cout << "Operacao realizada com sucesso!!\n";
                 break;
             case 2:
-                imprime(&lista);
+                cout<<"Informe a chave: ";
+                cin >> val;
+                push(&pilha,val);
                 break;
             case 3:
-                cout<<"Informe a chave: ";
-                cin >> val;
-                insereFim(&lista,val);
+                pop(&pilha);
+                cout << "Valor removido com sucesso da pilha!!\n";
                 break;
             case 4:
-                cout<<"Informe a chave: ";
-                cin >> val;
-                remover(&lista,val);
+                imprimePilha(&pilha);
                 break;
             case 5:
                 cout<<"Fim!";
