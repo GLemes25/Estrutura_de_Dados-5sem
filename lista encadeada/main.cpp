@@ -3,131 +3,131 @@
 using namespace std;
 
 struct address{
-        int chave;
+        int key;
         //char nome[30];
         //char rua [30];
         //char cidade[30];
         //char estado[3];
         //char cep[30];
-        struct address *prox;
+        struct address *next;
 };
-typedef struct address no;
+typedef struct address nodeType;
 typedef struct{
-    no *inicio;
-    int tam;
-}LISTA;
+    nodeType *start;
+    int size;
+}listType;
 
 //Procedimentos simples para manipulação da estrutura
 //1- Inicializar a lista
-void init (LISTA *l){
-  l->inicio = NULL;
-  l->tam=0;
+void init (listType *list){
+  list->start = NULL;
+  list->size=0;
 }
-//2-Inserir um nó no inicio da lista
-void insereIni(LISTA *l, int valor){
+//2-Inserir um nó no start da lista
+void insertStart(listType *list, int value){
     //Primeiro criar na memória o nó
     //Deve ser um ponteiro
-    no *novo = (no*) malloc(sizeof(no));
-    novo->chave=valor;
-    //novo->prox =NULL;
-    novo->prox = l->inicio;
-    l->inicio = novo;
-    l->tam++;
+    nodeType *newList = (nodeType*) malloc(sizeof(nodeType));
+    newList->key=value;
+    //newList->next =NULL;
+    newList->next = list->start;
+    list->start = newList;
+    list->size++;
 }
-void insereFim(LISTA *l,int val){
-    no *atual, *novo=(no*) malloc(sizeof(no));
-    novo ->prox = NULL;
-    novo ->chave = val;
+void insertEnd(listType *list,int value){
+    nodeType *current, *newList=(nodeType*) malloc(sizeof(nodeType));
+    newList ->next = NULL;
+    newList ->key = value;
     //Pode ser que a lista ainda não contenha nenhum valor
-    if(l->inicio==NULL){
-        l->inicio = novo;
+    if(list->start==NULL){
+        list->start = newList;
     }
     else{
         //percorrer a lista para encontrar o  último elemento
-        atual = l->inicio;
-        while(atual->prox!=NULL){
-            atual=atual->prox;
+        current = list->start;
+        while(current->next!=NULL){
+            current=current->next;
         }
-        atual->prox = novo;
+        current->next = newList;
     }
-    l->tam++;
+    list->size++;
 }
-void imprime(LISTA *l){
-    no *atual;//ponteiro para o nó a ser manipulado
-    atual = l->inicio;
-    cout <<"\nTamanho da lista: "<< l->tam<<endl;
+void showList(listType *list){
+    nodeType *current;//ponteiro para o nó a ser manipulado
+    current = list->start;
+    cout <<"\nTamanho da lista: "<< list->size<<endl;
     cout <<"Lista: ";
-    while(atual!=NULL){
-        cout<<atual ->chave<<" ";//imprime o atual
-        atual = atual->prox;
+    while(current!=NULL){
+        cout<<current ->key<<" ";//imprime o current
+        current = current->next;
     }
     cout<<endl<<endl;
 }
-void remover(LISTA *l, int val){
-    no *atual, *Aremover=NULL;
-    atual = l->inicio;
-    if(atual==NULL){
+void remove(listType *list, int value){
+    nodeType *current, *toRemove=NULL;
+    current = list->start;
+    if(current==NULL){
         cout<<"\nLista vazia!"<<endl;
     }
-    else if (l->inicio->chave == val) { // se o elemento está no inicio
-        cout <<"\nAchei no inicio "<< l->inicio->chave<<endl;
-        Aremover = l->inicio;
-        l->inicio = Aremover->prox;
+    else if (list->start->key == value) { // se o elemento está no start
+        cout <<"\nAchei no start "<< list->start->key<<endl;
+        toRemove = list->start;
+        list->start = toRemove->next;
     }
     else{
-        cout <<"\nNao está no inicio"<<endl;
-        while(atual->prox!= NULL && atual->prox->chave!=val)
+        cout <<"\nNao está no start"<<endl;
+        while(current->next!= NULL && current->next->key!=value)
         {
             //vai para o proximo nó
-            atual=atual->prox;
+            current=current->next;
             //vai até quebrar por encontrar ouchegar no fim da lista
             //fora do laço é que eu descubroo pq quebou
         }
-        if(atual ->prox !=NULL && atual->prox->chave == val){
-            cout<<"\nAchei o valor: "<<atual ->prox->chave<<endl;
-            Aremover = atual->prox;
-            atual->prox = Aremover ->prox;
+        if(current ->next !=NULL && current->next->key == value){
+            cout<<"\nAchei o valor: "<<current ->next->key<<endl;
+            toRemove = current->next;
+            current->next = toRemove ->next;
         }
         else{
             cout << "\nNao achei!\n";
-            Aremover = NULL;
+            toRemove = NULL;
         }
     }
-    if(Aremover){
-        free(Aremover);
-        l->tam--;
+    if(toRemove){
+        free(toRemove);
+        list->size--;
     }
 }
 
 int main()
 {
-    LISTA lista;
-    init(&lista);
-    int op=0;
-    int val;
-    while (op!=5){
-        cout <<"\n1-Inserir no inicio\n2-Imprimir \n";
+    listType list;
+    init(&list);
+    int option=0;
+    int value;
+    while (option!=5){
+        cout <<"\n1-Inserir no Inicio\n2-Imprimir \n";
         cout <<"3-Inserie no Fim\n4-Remover\n5-Sair\n";
-        cin>>op;
-        switch(op)
+        cin>>option;
+        switch(option)
         {
             case 1:
                 cout <<"\nInforme uma chave: ";
-                cin >> val;
-                insereIni(&lista,val);
+                cin >> value;
+                insertStart(&list,value);
                 break;
             case 2:
-                imprime(&lista);
+                showList(&list);
                 break;
             case 3:
                 cout<<"\nInforme a chave: ";
-                cin >> val;
-                insereFim(&lista,val);
+                cin >> value;
+                insertEnd(&list,value);
                 break;
             case 4:
                 cout<<"\nInforme a chave: ";
-                cin >> val;
-                remover(&lista,val);
+                cin >> value;
+                remove(&list,value);
                 break;
             case 5:
                 cout<<"\nFim!";
